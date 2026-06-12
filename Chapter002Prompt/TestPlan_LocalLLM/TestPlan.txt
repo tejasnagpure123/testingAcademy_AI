@@ -1,0 +1,163 @@
+1. Overall API Structure
+
+
+
+
+
+RESTful Principles: The API follows RESTful conventions, utilizing standard HTTP methods (GET, POST, PUT, DELETE) and resource-based URLs.
+
+
+
+Resources: The primary resource is "Booking," represented by URLs like /booking/{booking_id}.
+
+
+
+HTTP Methods:
+
+
+
+
+
+GET: (Not explicitly detailed in this excerpt, but would be used to retrieve booking details)
+
+
+
+POST: Used to create a new booking.
+
+
+
+PUT: Used to update an existing booking.
+
+
+
+DELETE: Used to delete a booking.
+
+2. Key Endpoints and Operations
+
+
+
+
+
+GET /booking/{booking_id}: (Not explicitly described, but would likely retrieve details for a specific booking ID.)
+
+
+
+POST /booking: Creates a new booking. The request body would contain the booking details (e.g., name, dates, price).
+
+
+
+PUT /booking/{booking_id}: Updates an existing booking. The request body would contain the fields you want to change.
+
+
+
+DELETE /booking/{booking_id}: Deletes a booking identified by its ID. Requires authentication (cookie or Basic Auth).
+
+
+
+GET /ping: A simple health check endpoint. Returns a 201 Created status code.
+
+3. Request/Response Formats & Authentication
+
+
+
+
+
+JSON: All requests and responses are expected to be in JSON format.
+
+
+
+Content-Type Header: Content-Type header must be set to application/json for POST, PUT, and DELETE requests.
+
+
+
+Authentication:
+
+
+
+
+
+Cookie Authentication: Uses a token cookie for authentication.
+
+
+
+Basic Authentication: Uses Basic Authentication (username/password) – requires the Authorization header to be set: Authorization: Basic <base64 encoded username:password>.
+
+4. Endpoint Details
+
+
+
+
+
+Partial Update (PUT): The PUT endpoint allows you to update only the fields you provide in the request body. It doesn’t require you to send all fields.
+
+
+
+Delete (DELETE): The DELETE endpoint requires authentication to prevent unauthorized deletion.
+
+5. Response Codes
+
+
+
+
+
+200 OK: Success for GET requests and successful POST/PUT/DELETE operations.
+
+
+
+201 Created: Success for the POST operation (creating a new booking).
+
+
+
+201 Created Health Check endpoint.
+
+6. Example Requests and Responses (Snippets)
+
+The document provides several examples of requests and responses for each endpoint. Here's a summary:
+
+
+
+
+
+POST /booking Example: Shows a request with the firstname, lastname, and totalprice fields.
+
+
+
+PUT /booking/{booking_id} Example: Shows a request containing only the firstname and lastname.
+
+
+
+DELETE /booking/1 Example (Cookie): Demonstrates authentication with a token cookie.
+
+
+
+DELETE /booking/1 Example (Basic Auth): Demonstrates authentication using Basic Auth.
+
+
+
+GET /ping Example: Shows the response from a successful health check.
+
+7. Additional Notes & Tools
+
+
+
+
+
+apidoc: The API documentation was generated using the apidoc tool (version 0.25.0), which is a helpful tool for generating API documentation from code.
+
+Key Takeaways for Developers
+
+
+
+
+
+Authentication is Crucial: Pay close attention to the authentication methods (cookies or Basic Auth) for each endpoint.
+
+
+
+JSON is the Standard: All API interactions will involve JSON data.
+
+
+
+Understand the PUT Endpoint: Leverage the PUT endpoint to efficiently update booking information, only sending the fields you’ve changed.
+
+To fully utilize this API, you'd need the complete API definition (likely in code) and a server instance to test these endpoints. This documentation provides a solid starting point for understanding the API's structure and how to interact with it.

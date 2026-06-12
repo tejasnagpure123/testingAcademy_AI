@@ -1,0 +1,5 @@
+com\testing\framework\utils\JsonUtil.class
+com\testing\framework\constants\Endpoints.class
+com\testing\framework\utils\RequestSpecBuilderUtil.class
+com\testing\framework\utils\AuthUtil.class
+com\testing\framework\utils\ConfigReader.class
