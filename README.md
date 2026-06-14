@@ -133,6 +133,23 @@ Six copy-paste prompt templates for the most common QA tasks. Each follows the *
 
 ---
 
+## Chapter 03 — B.L.A.S.T Framework (AI Test Plan Generator)
+
+A full-stack project applying the **B.L.A.S.T Framework** to build an AI-powered Test Plan Generator.
+- **B**lueprint: Defined the JSON data schema and discovery questions.
+- **L**ink: Connected to the Jira API v2 and Groq LLM.
+- **A**rchitect: 3-Layer architecture (Architecture SOPs, Navigation Router in FastAPI, Tools for atomic Python scripts).
+- **S**tylize: A lightweight Vite React application with a premium glassmorphism UI.
+- **T**rigger: Deployed the full stack to Vercel.
+
+**What's here:**
+- `Chapter003BlastFW/` — The complete source code.
+- `Chapter003BlastFW/B.L.A.S.T.md` — The protocol instructions.
+- `Chapter003BlastFW/api/` and `Chapter003BlastFW/tools/` — The Python backend.
+- **Live Demo:** [https://testplannerbuddy.vercel.app](https://testplannerbuddy.vercel.app)
+
+---
+
 ## How to Use This Repo
 
 You can read it linearly (chapter 01 → 02) or jump straight to a project:
