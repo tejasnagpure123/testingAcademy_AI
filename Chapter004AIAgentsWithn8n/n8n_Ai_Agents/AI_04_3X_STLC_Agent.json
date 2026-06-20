@@ -1,0 +1,332 @@
+{
+  "name": "VWO QA Artifacts Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        1520
+      ],
+      "id": "7d7cd04a-aa48-4cab-9577-f72fe570529e",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "LNg6M4s4D1liAQJm",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "n8nUserAuth",
+        "formTitle": "PRD QA Automation Engine",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Upload PRD Document",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -944,
+        1024
+      ],
+      "id": "4629b9b3-321a-46e6-a7b7-844934544c93",
+      "name": "On form submission",
+      "webhookId": "ad827a80-29b1-46d7-940e-c5dd430aa4c2"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "Upload_PRD_Document",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -736,
+        1024
+      ],
+      "id": "8e2c77a2-6192-477b-a2af-8076e350d97d",
+      "name": "Extract PDF Content"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Context:\nYou are a Senior QA Automation Architect. Your task is to analyze the provided Product Requirements Document (PRD) and generate a comprehensive, highly detailed Software Test Plan.\n\nInstructions:\n1. Read the PRD text provided at the end of this prompt.\n2. Output a strictly formatted Test Plan using Markdown.\n3. Do not include any conversational filler; output ONLY the Test Plan.\n4. Fill in the required details using information extracted from the PRD (e.g., Prepared By: Pramod Dutta, Project: VWO). For details not present in the PRD (like Jira IDs or specific dates), generate logical placeholders (e.g., TP-VWO-001, [TBD]).\n\nFollow this EXACT structure for the test plan:\n\n1. TEST PLAN OVERVIEW\n* Test Plan ID: TP-<JIRA_ID>\n* Project Name, Feature/Module, Prepared By, Date, Version\n\n2. OBJECTIVE\n* What this test plan validates based on the provided PRD.\n\n3. SCOPE\n* 3.1 In Scope: features to test\n* 3.2 Out of Scope: features NOT covered\n\n4. TEST STRATEGY\n* Testing Types (Functional, Regression, Smoke, Integration)\n* Testing Approach (Manual / Automated / Both)\n* Automation Tool: Playwright with TypeScript\n\n5. TEST ENVIRONMENT\n* Browsers, OS, Devices, Test Data Requirements\n\n6. ENTRY CRITERIA\n* Conditions before testing begins.\n\n7. EXIT CRITERIA\n* Conditions for testing to be complete.\n\n8. TEST SCENARIOS (High-Level)\n* Summary of key scenarios to be tested (e.g., A/B testing setup, SmartStats validation, Authentication).\n\n9. RISK ASSESSMENT\n* Create a Markdown table with columns: | Risk | Likelihood | Impact | Mitigation |\n\n10. DEFECT MANAGEMENT\n* Tool, severity levels, bug lifecycle.\n\n11. TEST SCHEDULE\n* Create a Markdown table with columns: | Phase | Start Date | End Date | Owner |\n\n12. SIGN-OFF\n* QA Lead, Dev Lead, Product Owner.\n\nPRD Source Text:\n{{ $json.text }}",
+        "options": {
+          "systemMessage": "="
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -528,
+        1024
+      ],
+      "id": "1e135521-10fa-44da-8783-2f9346787c5c",
+      "name": "Generate Test Plan"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "System Context:\nYou are a Senior QA Automation Engineer. Your task is to write detailed, executable Test Cases based on the provided Software Test Plan.\n\nInstructions:\n1. Read the Test Plan provided at the end of this prompt.\n2. Generate test cases for the key features outlined in the plan (e.g., Authentication, SmartStats, A/B Testing).\n3. Output the test cases STRICTLY in raw CSV format. \n4. Do NOT include any introductory greetings, markdown formatting (like ```csv), or concluding text. Output ONLY the raw CSV data.\n5. Use the following columns exactly, separated by commas:\nTestCase_ID, Module, Scenario, Pre_Conditions, Test_Steps, Expected_Result, Priority\n\nTest Plan Source:\n{{ $json.output }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -128,
+        1104
+      ],
+      "id": "55bc5531-10be-42da-a5cf-142f436125ae",
+      "name": "Generate Test Cases"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Please write the Playwright automation scripts in TypeScript based on the CSV test cases provided in the System Message.System Context:\nYou are a Senior SDET (Software Development Engineer in Test). Your task is to write automated UI tests using Playwright and TypeScript based on the provided CSV Test Cases.\n\nInstructions:\n1. Read the CSV Test Cases provided at the end of this prompt.\n2. Write robust, reliable Playwright tests in TypeScript for the highest priority scenarios (e.g., Login, Authentication, A/B Test validation).\n3. Use modern Playwright best practices (Page Object Model structure if applicable, async/await, proper assertions using 'expect').\n4. STRICT OUTPUT RULES: Output ONLY the raw TypeScript code. Do NOT include any conversational filler, introductory text, or concluding remarks. Do NOT wrap the code in markdown blocks (e.g., do not use ```typescript or ```). The output must be perfectly valid, ready-to-run TypeScript text.\n\nCSV Test Cases Source:\n{{ $json.output }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        288,
+        1184
+      ],
+      "id": "9643e0d5-8984-4f2d-98a7-82d8778475f6",
+      "name": "Generate PlayWright TestCases"
+    },
+    {
+      "parameters": {
+        "options": {
+          "fileName": "VWO_Playwright.ts"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        1408
+      ],
+      "id": "980a8ccc-1f3d-4d62-89d4-423dfff20503",
+      "name": "Save Playwright Tests"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "output",
+        "options": {
+          "fileName": "VWO_TestPlan.md"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        368,
+        704
+      ],
+      "id": "fe129e4c-77b0-4b7e-afe6-8fd752cdc4fd",
+      "name": "Save Test Plan"
+    },
+    {
+      "parameters": {
+        "options": {
+          "fileName": "VWO_TestCases.csv"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        368,
+        928
+      ],
+      "id": "de569032-30ff-4c6c-a13d-975aed4a0b7c",
+      "name": "Save Test Cases"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        800,
+        1040
+      ],
+      "id": "9d52f73a-3abe-4e30-8023-1e28bd7b2d3d",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "compress",
+        "fileName": "VWO_Automation_Suite.zip"
+      },
+      "type": "n8n-nodes-base.compression",
+      "typeVersion": 1.1,
+      "position": [
+        1008,
+        1056
+      ],
+      "id": "88533925-b393-4978-852f-4d0e49bb9824",
+      "name": "Compression"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Test Plan",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Generate Test Cases",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Generate PlayWright TestCases",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Content": {
+      "main": [
+        [
+          {
+            "node": "Generate Test Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Test Plan": {
+      "main": [
+        [
+          {
+            "node": "Generate Test Cases",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Save Test Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Test Cases": {
+      "main": [
+        [
+          {
+            "node": "Generate PlayWright TestCases",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Save Test Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate PlayWright TestCases": {
+      "main": [
+        [
+          {
+            "node": "Save Playwright Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Playwright Tests": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Save Test Cases": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Save Test Plan": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Compression",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "cf78ac29-5253-46ca-ba49-5d5b21aa310f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2c7591ed19de9f2a8e4356fe2dcd3709e54509c793b7ccdcb3b9b04b933c98a8"
+  },
+  "nodeGroups": [],
+  "id": "AAzz9brilz8FRtTh",
+  "tags": []
+}

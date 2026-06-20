@@ -150,6 +150,18 @@ A full-stack project applying the **B.L.A.S.T Framework** to build an AI-powered
 
 ---
 
+## Chapter 04 — AI Agents with n8n
+
+This chapter introduces automation and AI Agents using n8n. As part of this chapter, a local-first Job Tracker application was created.
+
+**What's here:**
+- `Chapter004AIAgentsWithn8n/Project_Job_Tracker/` — A single-page React application scaffolded with Vite and Tailwind CSS.
+- **Local Persistence:** Uses `idb` for browser IndexedDB storage without a backend.
+- **Drag-and-Drop Kanban:** Wishlist, Applied, Follow-up, Interview, Offer, Rejected columns powered by `@dnd-kit`.
+- **Features:** Modal for Adding/Editing Jobs, Export/Import JSON for backup, and Light/Dark mode.
+
+---
+
 ## How to Use This Repo
 
 You can read it linearly (chapter 01 → 02) or jump straight to a project:

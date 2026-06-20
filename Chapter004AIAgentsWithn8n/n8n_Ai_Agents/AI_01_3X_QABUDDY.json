@@ -1,0 +1,102 @@
+{
+  "name": "AI_01_3X_QABUDDY",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is Tejas. How can I assist you today?\nPS: Lets keep it pertaining to QA only",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -416,
+        -96
+      ],
+      "id": "cd232c80-1efb-4270-9173-0ef6b87ec8a6",
+      "name": "When chat message received",
+      "webhookId": "95b03a32-046a-4267-bf82-de390d613db0"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a QA Agent, you will only answer related to QA Queries , Expected answer slhould be in a strictly Technical words only.(RACE: Role Action Context, Results)."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -224,
+        -16
+      ],
+      "id": "46ae9fba-687c-4475-b88f-e3147e593a7c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-32b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        192
+      ],
+      "id": "e3172ec4-61ba-4c63-873e-a28ae71b4797",
+      "name": "Qwen Brain",
+      "credentials": {
+        "groqApi": {
+          "id": "LNg6M4s4D1liAQJm",
+          "name": "Groq account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qwen Brain": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "34191618-1972-40c2-8060-f2bae5119d7c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2c7591ed19de9f2a8e4356fe2dcd3709e54509c793b7ccdcb3b9b04b933c98a8"
+  },
+  "nodeGroups": [],
+  "id": "UEnLGnbbFp7NpCcX",
+  "tags": [
+    {
+      "updatedAt": "2026-06-15T03:20:13.898Z",
+      "createdAt": "2026-06-15T03:20:13.898Z",
+      "id": "9dvqOClZegn7Pj8m",
+      "name": "AI_3X"
+    }
+  ]
+}

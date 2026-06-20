@@ -1,0 +1,322 @@
+{
+  "name": "AI_03_3X_JIRA_AGENT_Req",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e4785a1d-6060-4709-9bde-912f410d6145",
+      "name": "When chat message received",
+      "webhookId": "01586c8c-ea00-48e5-872c-96e6c48e552e"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a QA assistant integrated with Jira and Google Sheets.\n\nTrigger behavior:\nWhenever the user message contains a request like \"create test case\" along with a Jira ticket key (e.g., \"create test case for PROJ-123\"), do the following automatically without asking for confirmation:\n\n1. Extract the Jira ticket key from the user's message.\n2. Use the \"Fetch a PRD by Ticket Id\" tool to retrieve the issue details (title, description, acceptance criteria) for that key.\n3. Based on the fetched requirements, generate one or more clear test cases. For each test case include:\n   - Test Case ID (e.g., TC-<ticket key>-01)\n   - Title\n   - Preconditions\n   - Test Steps\n   - Expected Result\n   - Priority (High/Medium/Low)\n4. Use the \"Append or update row in sheet\" tool to append each generated test case as a new row in the connected Google Sheet, mapping fields to the correct columns.\n5. Reply in chat with a short confirmation summarizing how many test cases were created and appended, plus a quick preview list of their titles.\n\nRules:\n- If no Jira key is found in the message, ask the user once for the ticket key before proceeding.\n- If the Jira key is invalid or fetch fails, tell the user clearly instead of guessing test cases.\n- Do not append duplicate test cases for the same ticket key in the same session; if unsure, ask whether to add more.\n- Keep test cases specific to the actual acceptance criteria/description fetched — do not invent unrelated scenarios.\n- Always perform the fetch and append steps yourself using the tools; never just describe what should be done."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a0f83312-d9b2-4757-8a5c-1ece7b4e60d3",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "814fd884-f137-4054-acd3-7e5e763d1429",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "LNg6M4s4D1liAQJm",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "issueKey": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Issue_Key', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.jiraTool",
+      "typeVersion": 1,
+      "position": [
+        368,
+        240
+      ],
+      "id": "d44016dc-2794-41fd-aed1-cfd062992483",
+      "name": "Get an issue in Jira Software",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "0JEXeQ8L8ophZxJu",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        224,
+        208
+      ],
+      "id": "0bcc3664-630e-4cd2-ae18-0658e6832f64",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1oijeJtAYt6wMdrvkGb0RKNfV8-MFMh_9kV5gRvP4PSs",
+          "mode": "list",
+          "cachedResultName": "VRD PRD Testcases ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oijeJtAYt6wMdrvkGb0RKNfV8-MFMh_9kV5gRvP4PSs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oijeJtAYt6wMdrvkGb0RKNfV8-MFMh_9kV5gRvP4PSs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Test Case ID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Test_Case_ID__using_to_match_', ``, 'string') }}",
+            "Summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}",
+            "Description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+            "Preconditions": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Preconditions', ``, 'string') }}",
+            "Test Steps": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Test_Steps', ``, 'string') }}",
+            "Expected Result": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Expected_Result', ``, 'string') }}",
+            "Actual Result": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Actual_Result', ``, 'string') }}",
+            "Status": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Status', ``, 'string') }}",
+            "Priority": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Priority', ``, 'string') }}",
+            "Assignee": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Assignee', ``, 'string') }}",
+            "JIRA Ticket": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('JIRA_Ticket', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "Test Case ID"
+          ],
+          "schema": [
+            {
+              "id": "Test Case ID",
+              "displayName": "Test Case ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Preconditions",
+              "displayName": "Preconditions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Test Steps",
+              "displayName": "Test Steps",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Expected Result",
+              "displayName": "Expected Result",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Actual Result",
+              "displayName": "Actual Result",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Priority",
+              "displayName": "Priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assignee",
+              "displayName": "Assignee",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "JIRA Ticket",
+              "displayName": "JIRA Ticket",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        512,
+        176
+      ],
+      "id": "8f42e2da-f6b1-48dd-ad58-a480e2873c7b",
+      "name": "Append or update row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sAQ24OASjksJNfuW",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get an issue in Jira Software": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d2682c75-137b-450f-8e69-966255a2bb6b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2c7591ed19de9f2a8e4356fe2dcd3709e54509c793b7ccdcb3b9b04b933c98a8"
+  },
+  "nodeGroups": [],
+  "id": "66puV1BdX0y6TzkO",
+  "tags": [
+    {
+      "updatedAt": "2026-06-15T03:20:13.898Z",
+      "createdAt": "2026-06-15T03:20:13.898Z",
+      "id": "9dvqOClZegn7Pj8m",
+      "name": "AI_3X"
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "name": "AI_02_3X_JIRA_AGENT",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is Tejas. How can I assist you today?\nPS: Lets keep it pertaining to QA only",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0ddfcffd-d058-4ebc-a9e3-bdca9ec5dabd",
+      "name": "When chat message received",
+      "webhookId": "95b03a32-046a-4267-bf82-de390d613db0"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are  a QA Automation Engineer with over 15 years of Experience. You will get details of JIRA ticket through chat. Your task is to create a Jira ticket with proper steps to reproduce and proper instructions like JIRA. Use the Jira tool attached."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        192,
+        80
+      ],
+      "id": "4c414384-5e1a-474a-b969-6fd5909623e6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        48,
+        288
+      ],
+      "id": "de60f597-748b-43e7-b882-0d8f8d5aaf5b",
+      "name": "Qwen Brain",
+      "credentials": {
+        "groqApi": {
+          "id": "LNg6M4s4D1liAQJm",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "project": {
+          "__rl": true,
+          "value": "10001",
+          "mode": "list",
+          "cachedResultName": "QA Testing"
+        },
+        "issueType": {
+          "__rl": true,
+          "value": "10013",
+          "mode": "list",
+          "cachedResultName": "Bug"
+        },
+        "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.jiraTool",
+      "typeVersion": 1,
+      "position": [
+        352,
+        288
+      ],
+      "id": "2abfeaac-8e58-442e-8750-490b94b1de62",
+      "name": "Create  a JIRA ticket in QA Testing Project",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "0JEXeQ8L8ophZxJu",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        176,
+        288
+      ],
+      "id": "b40d8ec8-4328-44d9-bd5b-735a08131dbc",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qwen Brain": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create  a JIRA ticket in QA Testing Project": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "32f8032f-8de4-4c62-b780-9f0f4d5ca89c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2c7591ed19de9f2a8e4356fe2dcd3709e54509c793b7ccdcb3b9b04b933c98a8"
+  },
+  "nodeGroups": [],
+  "id": "364oooIRJED3Xd7E",
+  "tags": [
+    {
+      "updatedAt": "2026-06-15T03:20:13.898Z",
+      "createdAt": "2026-06-15T03:20:13.898Z",
+      "id": "9dvqOClZegn7Pj8m",
+      "name": "AI_3X"
+    }
+  ]
+}
