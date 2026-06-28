@@ -1,0 +1,721 @@
+{
+  "name": "AI_06_02_3X_SocialMedia_AI_Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "d2b9e638-99de-4430-827b-8df82be8d13e",
+      "name": "Daily at 9 AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        784
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Generate ONE engaging content topic based on these keywords: QA, MCP, RAG, LLM, AI Agents, n8n, LangFlow, Crew AI, DeepEval, LangChain, AI Harness, LLM Eval. Return ONLY the topic title, nothing else.",
+        "options": {
+          "systemMessage": "You are a content strategist. Generate one compelling topic title based on the provided keywords. Return only the topic title without any additional text or explanation."
+        }
+      },
+      "id": "70a330ea-528c-46c1-bc73-c97698e482d7",
+      "name": "Agent 1 - Topic Generator",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        464,
+        784
+      ]
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {
+          "maxTokensToSample": 4096,
+          "temperature": 0.7
+        }
+      },
+      "id": "1ccc0685-bd74-4cfe-9eda-d95a4776fcea",
+      "name": "Groq Model - Topic Generator",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        576,
+        1088
+      ],
+      "credentials": {
+        "groqApi": {
+          "id": "LNg6M4s4D1liAQJm",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "date",
+              "name": "Date",
+              "value": "={{ $now.toFormat(\"yyyy-MM-dd\") }}",
+              "type": "string"
+            },
+            {
+              "id": "topic",
+              "name": "Topic",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8ea68a2d-9e7f-41ec-9104-2a564ed87014",
+      "name": "Format Topic for Sheet",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        816,
+        784
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "https://docs.google.com/spreadsheets/d/13V4crAr9_ZC2ev51rOz6CNZfApH4vT6GsR7GU6wD2nI/edit?gid=0#gid=0"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13V4crAr9_ZC2ev51rOz6CNZfApH4vT6GsR7GU6wD2nI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.Date }}",
+            "Topic": "={{ $json.Topic }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Topic",
+              "displayName": "Topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Linked in post ",
+              "displayName": "Linked in post ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Medium post",
+              "displayName": "Medium post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "IG Script",
+              "displayName": "IG Script",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "YT Script",
+              "displayName": "YT Script",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "296becfb-74af-422c-9eef-fd9ee62aaa96",
+      "name": "Write Topic to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1040,
+        784
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sAQ24OASjksJNfuW",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "https://docs.google.com/spreadsheets/d/13V4crAr9_ZC2ev51rOz6CNZfApH4vT6GsR7GU6wD2nI/edit?gid=0#gid=0"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13V4crAr9_ZC2ev51rOz6CNZfApH4vT6GsR7GU6wD2nI/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "id": "5c9d3978-7263-42ad-8952-292d70a31ef7",
+      "name": "Read Today Topic",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1264,
+        784
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sAQ24OASjksJNfuW",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Write a professional LinkedIn post about: {{ $json.Topic }}. Make it engaging, include relevant hashtags, and keep it under 1300 characters.",
+        "options": {
+          "systemMessage": "You are a professional LinkedIn content writer. Create engaging, professional posts that drive engagement."
+        }
+      },
+      "id": "92180b3a-f40e-4dd1-b9fd-4f1d03a7fb56",
+      "name": "Agent 2A - LinkedIn Writer",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1488,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {
+          "maxTokensToSample": 4096,
+          "temperature": 0.7
+        }
+      },
+      "id": "4d3e9509-4b6f-4dc5-8954-6b1ed4374cd7",
+      "name": "Groq Model - Content Writer",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        432
+      ],
+      "credentials": {
+        "groqApi": {
+          "id": "LNg6M4s4D1liAQJm",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Write a comprehensive 3000-word Medium article about: {{ $json.Topic }}. Include introduction, main sections with subheadings, code examples if relevant, and conclusion.",
+        "options": {
+          "systemMessage": "You are an expert technical writer for Medium. Create in-depth, well-structured articles with clear explanations and practical examples."
+        }
+      },
+      "id": "31236268-b080-4ec7-9d3a-897899c8ce6d",
+      "name": "Agent 2B - Medium Writer",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1488,
+        608
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Write a 2000-word technical article for Dev.to about: {{ $json.Topic }}. Include code examples, best practices, and practical implementation details. Use markdown formatting.",
+        "options": {
+          "systemMessage": "You are a technical writer for Dev.to. Create detailed, code-focused articles with practical examples and best practices."
+        }
+      },
+      "id": "06258ca7-4912-4a24-a324-4c3fac77b71b",
+      "name": "Agent 2E - Dev.to Writer",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1488,
+        896
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 10000
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "linkedinPost",
+              "name": "LinkedIn POST",
+              "value": "={{ $(\"Agent 2A - LinkedIn Writer\").item.json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "mediumArticle",
+              "name": "Medium Article",
+              "value": "={{ $(\"Agent 2B - Medium Writer\").item.json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "igScript",
+              "name": "IG Script",
+              "value": "={{ $(\"Agent 2C - Instagram Writer\").item.json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "devToArticle",
+              "name": "Dev.to(2000 Words Article)",
+              "value": "={{ $(\"Agent 2E - Dev.to Writer\").item.json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "topic",
+              "name": "Topic",
+              "value": "={{ $(\"Read Today Topic\").item.json.Topic }}",
+              "type": "string"
+            },
+            {
+              "id": "date",
+              "name": "Date",
+              "value": "={{ $(\"Read Today Topic\").item.json.Date }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "027c6f10-1a42-4c39-89e9-ff66d3ccda68",
+      "name": "Combine All Content",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2064,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "https://docs.google.com/spreadsheets/d/13V4crAr9_ZC2ev51rOz6CNZfApH4vT6GsR7GU6wD2nI/edit?gid=0#gid=0"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13V4crAr9_ZC2ev51rOz6CNZfApH4vT6GsR7GU6wD2nI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.Date }}",
+            "Linked in post ": "={{ $json[\"LinkedIn POST\"] }}",
+            "Medium post": "={{ $json[\"Medium Article\"] }}",
+            "IG Script": "={{ $json[\"IG Script\"] }}",
+            "Status": "=Generated"
+          },
+          "matchingColumns": [
+            "Date"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Topic",
+              "displayName": "Topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Linked in post ",
+              "displayName": "Linked in post ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Medium post",
+              "displayName": "Medium post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "IG Script",
+              "displayName": "IG Script",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "YT Script",
+              "displayName": "YT Script",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "ee880d9d-7102-4e92-8d25-955a02f4134e",
+      "name": "Agent 4 - Update Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2288,
+        704
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sAQ24OASjksJNfuW",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3.1-flash-image-preview"
+        },
+        "prompt": "=Create three professional images for the topic: {{ $(\"Read Today Topic\").item.json.Topic }}. 1) A Medium article cover image (landscape), 2) A LinkedIn post image (square), 3) An Instagram image (portrait/square).",
+        "options": {
+          "binaryPropertyOutput": "images"
+        }
+      },
+      "id": "d4735b95-f15f-43ac-abd5-930e5f569ed1",
+      "name": "Agent 3 - Image Generator",
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        1536,
+        1104
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "gHmFUsfnxDfTgDPf",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "id": "4c7ce078-8217-4774-99c2-93a33b449791",
+      "name": "Wait for All Content",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1840,
+        672
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Daily at 9 AM": {
+      "main": [
+        [
+          {
+            "node": "Agent 1 - Topic Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 1 - Topic Generator": {
+      "main": [
+        [
+          {
+            "node": "Format Topic for Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Model - Topic Generator": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent 1 - Topic Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Topic for Sheet": {
+      "main": [
+        [
+          {
+            "node": "Write Topic to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Topic to Sheet": {
+      "main": [
+        [
+          {
+            "node": "Read Today Topic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Today Topic": {
+      "main": [
+        [
+          {
+            "node": "Agent 2A - LinkedIn Writer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Agent 2B - Medium Writer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Agent 2E - Dev.to Writer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Agent 3 - Image Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 2A - LinkedIn Writer": {
+      "main": [
+        [
+          {
+            "node": "Wait for All Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Model - Content Writer": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent 2A - LinkedIn Writer",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Agent 2B - Medium Writer",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Agent 2E - Dev.to Writer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 2B - Medium Writer": {
+      "main": [
+        [
+          {
+            "node": "Wait for All Content",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Agent 2E - Dev.to Writer": {
+      "main": [
+        [
+          {
+            "node": "Wait for All Content",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Combine All Content": {
+      "main": [
+        [
+          {
+            "node": "Agent 4 - Update Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for All Content": {
+      "main": [
+        [
+          {
+            "node": "Combine All Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 3 - Image Generator": {
+      "main": [
+        [
+          {
+            "node": "Wait for All Content",
+            "type": "main",
+            "index": 2
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "3e793293-f874-4a00-8b2c-bb0f38b22dec",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2c7591ed19de9f2a8e4356fe2dcd3709e54509c793b7ccdcb3b9b04b933c98a8"
+  },
+  "nodeGroups": [],
+  "id": "dxmbHx5sLQ3hxtyj",
+  "tags": []
+}
