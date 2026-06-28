@@ -1,0 +1,76 @@
+{
+  "config": {
+    "configFile": "/Users/promode/Documents/AdvancePlaywrightFramework1x/playwright.config.ts",
+    "rootDir": "/Users/promode/Documents/AdvancePlaywrightFramework1x/src/tests",
+    "preserveOutput": "always",
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "projects": [
+      {
+        "outputDir": "/Users/promode/Documents/AdvancePlaywrightFramework1x/test-results",
+        "name": "chromium"
+      }
+    ]
+  },
+  "suites": [
+    {
+      "title": "dashboardTests/login-dashboard.spec.ts",
+      "file": "dashboardTests/login-dashboard.spec.ts",
+      "specs": [
+        {
+          "title": "TC_01 to TC_47: Valid login scenarios (Representative)",
+          "ok": true,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "status": "expected",
+              "results": [{ "status": "passed", "duration": 1200 }]
+            }
+          ]
+        },
+        {
+          "title": "TC_48: Login fails with expired auth token (Consistent Failure)",
+          "ok": false,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "status": "unexpected",
+              "results": [{ "status": "failed", "duration": 3400, "error": { "message": "Timed out waiting for locator('.dashboard-header')" } }]
+            }
+          ]
+        },
+        {
+          "title": "TC_49: MFA prompt does not render on high latency (Consistent Failure)",
+          "ok": false,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "status": "unexpected",
+              "results": [{ "status": "failed", "duration": 3100, "error": { "message": "Expected element to be visible" } }]
+            }
+          ]
+        },
+        {
+          "title": "TC_50: SSO redirection timeout (Flaky Test - Fails in Build 1)",
+          "ok": false,
+          "tests": [
+            {
+              "expectedStatus": "passed",
+              "status": "unexpected",
+              "results": [{ "status": "failed", "duration": 5000, "error": { "message": "Navigation timeout exceeded" } }]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "startTime": "2026-06-18T08:00:00.000Z",
+    "duration": 45000,
+    "expected": 47,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  }
+}

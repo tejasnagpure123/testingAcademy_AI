@@ -26,12 +26,12 @@ function App() {
           output_type: 'chat',
           input_type: 'text',
           input_value: 'Analyze these two Playwright runs and tell me which build has the most failing/flaky test.',
-          session_id: 'postman-session-1',
+          session_id: `ui-session-${Date.now()}`,
           tweaks: {
-            'File-XXXXX': {
+            'File-QGi3B': {
               path: [file1]
             },
-            'File-YYYYY': {
+            'File-LGRrN': {
               path: [file2]
             }
           }
