@@ -162,6 +162,17 @@ This chapter introduces automation and AI Agents using n8n. As part of this chap
 
 ---
 
+## Chapter 05 — AI Agents with LangFlow
+
+This chapter explores visual programming of AI Agents using LangFlow. As part of this chapter, a **Flaky Test Analyzer AI Agent** was built.
+
+**What's here:**
+- `Chapter005AIAgentsWithLangFlow/flaky_test_Analyzer_Ai_Agent/UI` — A React + Vite web UI providing a smooth frontend interface for the agent.
+- **AI-Powered Flaky Test Detection:** The agent processes Playwright test results from multiple builds to accurately identify flaky vs. consistent failures.
+- **LangFlow Backend Integration:** The React application seamlessly integrates with the LangFlow backend, utilizing a Vite proxy to prevent CORS issues and accurately applying tweaks using internal component IDs.
+
+---
+
 ## How to Use This Repo
 
 You can read it linearly (chapter 01 → 02) or jump straight to a project:
