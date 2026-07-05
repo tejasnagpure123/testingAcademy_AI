@@ -173,6 +173,18 @@ This chapter explores visual programming of AI Agents using LangFlow. As part of
 
 ---
 
+## Chapter 06 — RAG (Retrieval-Augmented Generation)
+
+This chapter demystifies how to connect LLMs to private data using a local Vector Database and the LangChain ecosystem. As part of this chapter, a complete **RAG Explorer** web application was built.
+
+**What's here:**
+- `Chapter006Rag/Basic_Rag/` — A full-stack application (React frontend + Express/LangChain backend).
+- **PDF Data Ingestion:** Automatically parses a complex PRD (Product Requirements Document), chunks the text, and generates mathematical embeddings using Ollama (`nomic-embed-text`).
+- **Local Vector Search:** Stores the chunks into a local ChromaDB instance, allowing lightning-fast semantic search without cloud databases.
+- **AI Answer Generation:** Retrieves relevant chunks and passes them to Groq's high-speed inference engine (`llama-3.3-70b-versatile`) to accurately answer questions based solely on the provided PDF.
+
+---
+
 ## How to Use This Repo
 
 You can read it linearly (chapter 01 → 02) or jump straight to a project:
