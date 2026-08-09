@@ -39,7 +39,7 @@ Stage 2 (Chat):
 ## Setup
 
 ```bash
-cd Chapter_07_RAG/Advance_RAG_EXPLAIN
+cd Chapter006Rag/Advance_Rag
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
