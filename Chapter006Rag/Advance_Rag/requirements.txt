@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+qdrant-client
+FlagEmbedding
+transformers
+tokenizers
+pandas
+python-dotenv
+openai
+groq
+sse-starlette
+python-multipart

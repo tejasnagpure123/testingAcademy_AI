@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advance RAG Explorer</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Left Pane: Pipeline Stage Tracker -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>RAG Pipeline</h2>
+            </div>
+            
+            <div class="pipeline-tracker" id="pipeline-tracker">
+                <div class="stage" id="stage-ingest">
+                    <div class="stage-icon">📥</div>
+                    <div class="stage-content">
+                        <h3>Ingestion</h3>
+                        <p class="status-text">Waiting for file...</p>
+                    </div>
+                </div>
+                
+                <div class="stage" id="stage-query">
+                    <div class="stage-icon">🔍</div>
+                    <div class="stage-content">
+                        <h3>Query Rewrite</h3>
+                        <p class="status-text">Pending...</p>
+                    </div>
+                </div>
+                
+                <div class="stage" id="stage-search">
+                    <div class="stage-icon">⚡</div>
+                    <div class="stage-content">
+                        <h3>Hybrid Search (Qdrant)</h3>
+                        <p class="status-text">Pending...</p>
+                    </div>
+                </div>
+
+                <div class="stage" id="stage-rerank">
+                    <div class="stage-icon">⚖️</div>
+                    <div class="stage-content">
+                        <h3>Re-ranking (Cross-Encoder)</h3>
+                        <p class="status-text">Pending...</p>
+                    </div>
+                </div>
+
+                <div class="stage" id="stage-generate">
+                    <div class="stage-icon">🧠</div>
+                    <div class="stage-content">
+                        <h3>Generation (LLM)</h3>
+                        <p class="status-text">Pending...</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Pane: Active Content / Chat -->
+        <main class="main-content">
+            <header class="main-header">
+                <nav class="tabs">
+                    <button class="tab-btn active" data-tab="upload">Upload & Ingest</button>
+                    <button class="tab-btn" data-tab="chunks">Chunks Explorer</button>
+                    <button class="tab-btn" data-tab="chat">Chat</button>
+                    <button class="tab-btn" data-tab="explainer" onclick="window.open('/rag_architecture_explainer.html', '_blank')">Explainer</button>
+                </nav>
+            </header>
+
+            <div class="tab-content active" id="tab-upload">
+                <div class="upload-container">
+                    <h2>Ingest Data</h2>
+                    <p>Upload a CSV file to begin embedding with BAAI/bge-m3 into Qdrant.</p>
+                    
+                    <div class="file-upload">
+                        <input type="file" id="file-input" accept=".csv,.xlsx,.xls">
+                        <button id="upload-btn" class="primary-btn">Start Ingestion</button>
+                    </div>
+                    
+                    <div class="ingest-progress" id="ingest-progress" style="display: none;">
+                        <h3>Ingestion Progress</h3>
+                        <div class="log-window" id="ingest-log"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-chunks">
+                <div class="chunks-container">
+                    <div class="chunks-header">
+                        <h2>Chunks Explorer</h2>
+                        <input type="text" id="chunk-search" placeholder="Search chunks...">
+                        <button id="load-chunks-btn" class="primary-btn">Load Chunks</button>
+                    </div>
+                    <div class="chunks-list" id="chunks-list">
+                        <p>No chunks loaded.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-chat">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message assistant">
+                            <p>Hello! I am grounded on the VWO test cases. Ask me questions or ask me to generate a new test case!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-input" placeholder="Type a message (e.g., 'What is the priority of VWO-1001?' or 'Create a new test case for checkout')">
+                        <button id="chat-send-btn" class="primary-btn">Send</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
