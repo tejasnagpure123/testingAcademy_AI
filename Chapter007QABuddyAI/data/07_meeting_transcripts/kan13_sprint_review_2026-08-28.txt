@@ -1,0 +1,80 @@
+KAN-13 Sprint 16 Review Meeting — VWO Login Authentication
+Date: 2026-08-28
+Ticket: KAN-13 — VWO Login Dashboard Authentication
+Attendees: Alice (QA Lead), Bob (Senior QA), Carol (QA Engineer), David (QA Engineer), Priya (Product Manager)
+
+Alice: Good morning. Sprint 16 review for KAN-13. Let's go through each requirement and see where we stand. Bob, let's start with the functional requirements.
+
+Bob: Starting with FR-001 — Email and Password Authentication. All four acceptance criteria are verified and passing. Happy path works, Sign in button is present, email and password fields are confirmed. David, you want to cover the negative results?
+
+David: NEG-001 — invalid email format — is passing. The field shows a validation error for formats like "user@" or "plaintext". NEG-002 — invalid password — is also passing. The error message displays correctly. One thing worth noting: the error message is a generic "Invalid email or password" rather than revealing which field is wrong, which is actually the secure behavior we'd expect.
+
+Alice: Good observation. That's intentional from the security standpoint — we should document that in the test notes so it doesn't get raised as a bug in future.
+
+Carol: FR-002 — Remember Me — passed. Checkbox is visible, selectable, and deselectable. I also did a session persistence check across a browser close and reopen — the session was preserved with Remember Me on, and expired correctly with it off.
+
+Alice: Excellent, that goes beyond the acceptance criteria. Good catch.
+
+Bob: FR-003 — Forgot Password. Happy path passed — link is visible and clicking it navigates to the reset flow. I also tested the token expiry edge case that Carol flagged in the planning session. We found a bug there.
+
+Alice: Tell us more.
+
+Bob: The password reset token expires in 30 minutes according to the backend config. However, if you click the reset link exactly on the boundary — around the 28-30 minute mark — the API sometimes returns a 200 OK but displays an error in the UI. It's a race condition between the token validation and expiry cleanup job. I've raised this as KAN-14 — it's not a blocker for KAN-13 but it needs a fix before the next release.
+
+Alice: Good find. Priya, are you aware of KAN-14?
+
+Priya: No, that's new to me. I'll take a look after this call. If it affects users, we should prioritize it in Sprint 17.
+
+Carol: FR-004 — Google Authentication. The "Sign in with Google" button is visible and the OAuth flow initiates correctly in staging. The staging test account credentials issue Bob mentioned in planning was resolved — DevOps updated the OAuth credentials. One note: in Firefox, there's a brief flash of unstyled content on the Google consent screen before the styles load. It's cosmetic, not a functional issue, but worth logging.
+
+Alice: Log it as a low-severity cosmetic bug. FR-005?
+
+David: FR-005 — Enterprise SSO. The "Sign in using SSO" button is visible. The Okta redirect works correctly. I tested with the staging Okta tenant and the SAML assertion came back correctly. Passed.
+
+Alice: FR-006 and FR-007?
+
+Bob: FR-006 — Free Trial button — is visible and navigates to the registration flow. Passed. FR-007 — Privacy Policy and Terms. We heard back from Alice's check with legal: it's navigation-only, no modal or embedded behavior required. Both links are visible and navigate to the correct pages. Passed.
+
+Alice: And FR-008 — the product announcement banner?
+
+Carol: Passed. The "Welcome to Wingify" banner is displayed on the login page. The "Learn More" button is visible and links to the product blog. I also confirmed it's keyboard accessible — Tab reaches the button and Enter activates it.
+
+Alice: Great. Now let's go through the non-functional requirements.
+
+Bob: NFR-001 — Responsive Design. I tested on Chrome for Android via BrowserStack using a Pixel 7 device. The layout adapts correctly. Carol tested on Safari on iOS 17 on an iPhone 14. Carol, what did you find?
+
+Carol: On iPhone 14 in Safari, the SSO button text overflows slightly at the default font size. It's a minor layout issue. I've raised it as a CSS fix — one line of max-width will resolve it. Not a release blocker.
+
+Alice: Noted. NFR-002 — Accessibility?
+
+Carol: I ran axe-core on the login page. It flagged two issues: first, the "Remember Me" checkbox has no accessible label — the label element is not programmatically associated via `for` attribute. Second, the Product Announcement banner close button has no accessible name. Both are WCAG 2.1 AA violations. I've raised these as separate sub-tasks under KAN-13. They need to be fixed before we can mark NFR-002 as passed.
+
+Alice: Can we get those fixes into Sprint 16 still?
+
+David: I can talk to the frontend dev today. Both are small changes — the label `for` attribute and an `aria-label` on the close button. Should be done in a few hours.
+
+Alice: Good. Let's target verifying those by end of day today. NFR-003?
+
+David: NFR-003 — Page Load Performance. I measured Time to Interactive using the Playwright Performance API. Without the banner: 1.4 seconds. With the banner: 1.7 seconds. Both under the 2-second threshold. Passed.
+
+Alice: Excellent. NFR-004?
+
+Bob: NFR-004 — High Availability. We can't directly test 99.9% uptime from QA. I've verified that the authentication service is behind a load balancer and has health check endpoints configured. I've raised a note in the ticket that uptime monitoring is the responsibility of the infrastructure team, and pointed to the Datadog dashboard they've set up.
+
+Alice: That's the right approach. Priya, anything from the product side before we close?
+
+Priya: Just one — the security team reviewed David's SQL injection test recommendation from the planning session. They ran their own pentest on the login form and confirmed the inputs are parameterized and safe. No vulnerability found. That's a green flag.
+
+Alice: Great outcome. Let me summarize. KAN-13 status: 8 of 8 functional requirements verified, 3 of 4 NFRs passed (NFR-002 pending two accessibility fixes expected today), 1 minor bug raised as KAN-14 (token expiry race condition), 1 cosmetic bug on iOS SSO button layout, 2 WCAG sub-tasks raised under KAN-13.
+
+Action Items:
+1. David: Coordinate with frontend dev to fix the Missing label `for` on Remember Me and missing aria-label on banner close button — target today
+2. Carol: Retest NFR-002 after the accessibility fixes are deployed to staging
+3. Bob: Document KAN-14 (token expiry race condition) with reproduction steps and assign to backend team
+4. Alice: Update KAN-13 status to "In Review" pending NFR-002 re-verification
+5. Priya: Review KAN-14 and schedule for Sprint 17 if severity warrants it
+
+KAN-13 is on track for Done status by end of Sprint 16. Good work everyone!
+
+Next meeting: Sprint 17 Planning, 2026-09-04 at 10 AM.
+

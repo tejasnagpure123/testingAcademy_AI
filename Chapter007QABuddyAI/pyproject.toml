@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=70.0", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "qabuddy-ai"
+version = "1.0.0"
+description = "Self-hosted Hybrid RAG system for QA Engineers"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+keywords = ["rag", "qa", "testing", "llm", "vector-database", "selenium", "playwright"]
+authors = [
+    { name = "QABuddy.ai Team" }
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+# ─── Ruff (linting + formatting) ────────────────────────────
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line-too-long (handled by formatter)
+    "B904",  # use raise from
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+
+# ─── Coverage ────────────────────────────────────────────────
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "scripts/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+    "except ImportError",
+]
+show_missing = true
+fail_under = 60
+
+# ─── MyPy ────────────────────────────────────────────────────
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = false
+warn_unused_configs = true
+ignore_missing_imports = true

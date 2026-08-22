@@ -1,0 +1,69 @@
+KAN-13 Test Planning Meeting — VWO Login Authentication
+Date: 2026-08-21
+Ticket: KAN-13 — VWO Login Dashboard Authentication
+Attendees: Alice (QA Lead), Bob (Senior QA), Carol (QA Engineer), David (QA Engineer), Priya (Product Manager)
+
+Alice: Good morning everyone. Today we're kicking off the test planning session for KAN-13 — the VWO Login Authentication story. Priya, can you give us a quick summary of the business context before we get into the test scenarios?
+
+Priya: Sure. The primary goal is to give registered VWO users a secure and frictionless way to log in. KAN-13 covers eight functional requirements — email/password login, Remember Me, Forgot Password, Google OAuth, Enterprise SSO, Free Trial navigation, Privacy Policy links, and the product announcement banner. We also have four non-functional requirements around responsiveness, accessibility, performance, and availability.
+
+Alice: Thanks Priya. Bob, you've reviewed the ticket. What's your initial risk assessment?
+
+Bob: There are a few high-risk areas. First, FR-001 — email and password authentication. This is the primary path, so any regression here is a P0 issue. Second, FR-004 and FR-005 — Google OAuth and Enterprise SSO — both involve third-party identity providers. These are notoriously flaky in staging environments because the OAuth redirect URIs often differ from production.
+
+Carol: I'd add FR-003, the Forgot Password flow, to that list. Last release we had an issue where the reset link expired too quickly, and that wasn't caught until production. We need to explicitly test the token expiry edge case this time.
+
+Alice: Good call. Let's make sure that's in the negative scenarios. David, what's the test coverage plan for FR-001?
+
+David: For FR-001, we need to cover: valid email and password — happy path, invalid email format — NEG-001, invalid password — NEG-002, empty fields, and also SQL injection in the email and password fields. That last one isn't listed explicitly in KAN-13 but given the security context of authentication, I think we should add it.
+
+Alice: Agree. Add that as an out-of-scope-but-recommended item and flag it for the security team too.
+
+Bob: One thing I want to flag for FR-004 — Sign in with Google. Our staging environment uses a test Google account. We need to make sure the test credentials are documented and available to everyone before Carol starts writing those tests. Last time this was a blocker.
+
+Carol: I can own the Google SSO tests. I'll ping DevOps today to confirm the test account details. For Enterprise SSO — FR-005 — do we have a test IdP configured in staging?
+
+Alice: David, do you know the status on that?
+
+David: The staging environment has Okta configured as the test IdP. I set it up during the last sprint. The metadata URL is in the internal wiki under "QA Staging — Auth Config". I'll drop the link in Slack after this call.
+
+Alice: Perfect. Now let's talk about accessibility — NFR-002. This one is often treated as an afterthought. Carol, can you own the keyboard navigation and screen reader checks?
+
+Carol: Yes. I'll use axe-core for automated accessibility scanning on the login page and do a manual keyboard tab-order walkthrough. The main elements to verify are: email field, password field, Remember Me checkbox, Sign in button, Forgot Password link, Google SSO button, Enterprise SSO button, and Free Trial button. Each one needs to be reachable via Tab and activated via Enter or Space.
+
+Bob: Don't forget the Product Announcement banner — FR-008. The "Learn More" button inside the banner also needs to be keyboard accessible.
+
+Carol: Good point. I'll add that to my checklist.
+
+Alice: What about NFR-003 — page load performance? We need the login page under two seconds.
+
+David: I'll set up a Playwright performance test using the browser's Performance API. We can measure Time to Interactive for the login page on our staging environment. If it crosses 1.8 seconds, we'll flag it as a warning. Over 2 seconds is a test failure.
+
+Alice: That's a good approach. Make sure you test it both with and without the product announcement banner, because the banner fetches content dynamically.
+
+David: Noted. I'll parameterize the test for both states.
+
+Priya: One thing I want to flag from the product side — FR-007, Privacy Policy and Terms links. The PRD only has low-confidence traceability for this — it's inferred from the screenshot, not explicitly documented. We should verify with legal if there are specific behaviors expected when those links are clicked, or if it's just a navigation check.
+
+Alice: Good call, Priya. I'll send a quick Slack message to the legal team today. For now, Bob, let's scope FR-007 as "navigation check only" — confirm the links exist and are clickable.
+
+Bob: Got it. That's a quick test. I'll cover it in the smoke test suite.
+
+Alice: Let's talk about test environments and browser matrix. What are we targeting?
+
+Bob: Per the PRD, we need to cover Chrome and Firefox at minimum. Given the mobile responsiveness requirement — NFR-001 — I'd add Chrome on Android and Safari on iOS.
+
+Carol: I can handle the mobile testing using BrowserStack. I'll set up the device matrix for the responsive design checks.
+
+Alice: Perfect. Let me now summarize the action items coming out of this session:
+
+Action Items:
+1. Carol: Write test cases for FR-001 (Email/Password), FR-003 (Forgot Password) including token expiry edge case, FR-004 (Google SSO), and NFR-002 (Accessibility with axe-core + manual keyboard nav)
+2. David: Write Playwright performance test for NFR-003 (page load ≤ 2s) covering both banner states; drop Okta staging config link in Slack
+3. Bob: Write test cases for FR-002 (Remember Me), FR-005 (Enterprise SSO), FR-006 (Free Trial), FR-007 (Privacy Policy — navigation only), FR-008 (Banner + Learn More button); handle browser matrix smoke tests
+4. Alice: Flag SQL injection test recommendation to security team; confirm FR-007 behavior with legal team
+5. Priya: Confirm expected behavior for Privacy Policy and Terms links with legal
+
+Next meeting: Sprint 16 Review, 2026-08-28 at 10 AM.
+Ticket: KAN-13 — Target completion by end of Sprint 16.
+

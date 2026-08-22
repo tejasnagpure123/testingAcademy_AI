@@ -1,0 +1,79 @@
+# ============================================================
+# QABuddy.ai — Docker Compose
+# One-command deployment: Qdrant + API + UI + Nginx
+# ============================================================
+
+version: "3.9"
+
+services:
+  # ─── Qdrant Vector Database ─────────────────────────────
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qabuddy-qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__API_KEY=${QDRANT_API_KEY:-qabuddy-qdrant-key}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ─── QABuddy API Server ────────────────────────────────
+  qabuddy-api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: api
+    container_name: qabuddy-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    env_file:
+      - ../.env
+    environment:
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+    volumes:
+      - ../data:/app/data:ro
+    restart: unless-stopped
+
+  # ─── QABuddy Chat UI ──────────────────────────────────
+  qabuddy-ui:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: ui
+    container_name: qabuddy-ui
+    ports:
+      - "8501:8501"
+    depends_on:
+      - qabuddy-api
+    environment:
+      - API_URL=http://qabuddy-api:8000
+      - APP_PASSWORD=${APP_PASSWORD:-qabuddy2026}
+    restart: unless-stopped
+
+  # ─── Nginx Reverse Proxy ──────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: qabuddy-nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - qabuddy-api
+      - qabuddy-ui
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+
+volumes:
+  qdrant_storage:
+    driver: local

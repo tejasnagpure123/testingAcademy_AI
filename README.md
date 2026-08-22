@@ -36,8 +36,13 @@ Each chapter pairs concept material with a hands-on project, a prompt template, 
         ├── 02_TestCases_from_prd
         ├── 03_API_Test_Generation.md
         ├── 04_Negative_TC_Only.md
-        ├── 05_Secuirty_Test.md
-        └── 06_Regression_Suite.md
+├── Chapter006Rag/                Connecting LLMs to private data with local vector DB
+│   └── Basic_Rag/                PDF ingestion + ChromaDB + Ollama + Groq
+│
+└── Chapter007QABuddyAI/          Enterprise Multi-Source Hybrid RAG for QA Engineers
+    ├── data/                     10 Data sources (Selenium, Playwright, JIRA, PRD, Logs, etc.)
+    ├── src/                      FastAPI Backend, Qdrant Hybrid Search, BGE-M3, Gemini LLM
+    └── src/ui/app.py             Claude.ai themed Streamlit Chat UI (White/Cream & Teal)
 ```
 
 ---
@@ -182,6 +187,43 @@ This chapter demystifies how to connect LLMs to private data using a local Vecto
 - **PDF Data Ingestion:** Automatically parses a complex PRD (Product Requirements Document), chunks the text, and generates mathematical embeddings using Ollama (`nomic-embed-text`).
 - **Local Vector Search:** Stores the chunks into a local ChromaDB instance, allowing lightning-fast semantic search without cloud databases.
 - **AI Answer Generation:** Retrieves relevant chunks and passes them to Groq's high-speed inference engine (`llama-3.3-70b-versatile`) to accurately answer questions based solely on the provided PDF.
+
+---
+
+## Chapter 07 — QABuddy.ai (Enterprise Hybrid RAG for QA Engineers)
+
+A self-hosted, multi-source **Hybrid RAG** platform connecting 10 QA data sources into a single searchable brain with hybrid dense + sparse retrieval, cross-encoder reranking, and grounded answers with strict file/ticket citations.
+
+**What's here:**
+- `Chapter007QABuddyAI/` — Full-stack Hybrid RAG application.
+- **10 Ingested Knowledge Sources:**
+  - `data/01_selenium_framework/` — Java Selenium Page Object Model repo (69 chunks)
+  - `data/02_playwright_framework/` — TypeScript Playwright framework repo (231 chunks)
+  - `data/03_test_cases/` — CSV / XLSX test cases (5,000 rows)
+  - `data/04_jira_tickets/` — JIRA API integration + local tickets (`KAN-13.md`, 1 chunk)
+  - `data/05_company_docs/` — Markdown guidelines & QA standards (26 chunks)
+  - `data/07_meeting_transcripts/` — Sprint planning & review transcripts (70 chunks)
+  - `data/09_prd_srs_brd_frd/` — PDF PRD requirement documents (55 chunks)
+  - `data/10_jenkins_logs/` — Classified Jenkins build failure logs (10 chunks)
+- **Hybrid Retrieval & Reranking:** Open-source `BAAI/bge-m3` (dense 1024d + sparse lexical weights) indexed in `Qdrant` with RRF fusion, reranked with `BAAI/bge-reranker-v2-m3` cross-encoder.
+- **FastAPI Backend:** REST API with `/api/chat`, `/api/health`, `/api/ingest` and interactive OpenAPI docs at `http://localhost:8000/docs`.
+- **Claude.ai Themed UI:** Warm white & cream layout (`#FAF8F5`, `#F4EFE6`), editorial `Newsreader` serif headers, teal accents (`#0D9488`), suggested prompt cards, domain filters, and citation expanders.
+- **Automated Tests:** 51 unit & integration tests covering parsers, chunkers, cleaners, vector store, and QA chain.
+
+**How to Run Chapter 07:**
+```bash
+cd Chapter007QABuddyAI
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start FastAPI backend (Terminal 1)
+python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000
+
+# Start Streamlit UI (Terminal 2)
+python -m streamlit run src/ui/app.py --server.port 8501
+```
+- Open **`http://localhost:8501`** (Password: `qabuddy2026`)
 
 ---
 
