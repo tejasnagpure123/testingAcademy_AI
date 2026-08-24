@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+server.py
+vwo_testcases_mcp_server.egg-info/PKG-INFO
+vwo_testcases_mcp_server.egg-info/SOURCES.txt
+vwo_testcases_mcp_server.egg-info/dependency_links.txt
+vwo_testcases_mcp_server.egg-info/requires.txt
+vwo_testcases_mcp_server.egg-info/top_level.txt

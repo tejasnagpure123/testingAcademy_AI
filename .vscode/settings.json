@@ -1,3 +1,25 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "chat.tools.terminal.autoApprove": {
+        "/^uv --version$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd \"d:\\\\Study\\\\TestingAcademy_AI_Blueprint\\\\Chapter010MCP_Creation_VIBE\\\\testcase-creator-mcp\"; uv pip install -e \\.$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^uv venv; \\.\\\\\\.venv\\\\Scripts\\\\activate; uv pip install -e \\.$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^uv pip index search fastmcp$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^\\.\\\\\\.venv\\\\Scripts\\\\activate; uv pip install \"fastmcp<3\"$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
 }

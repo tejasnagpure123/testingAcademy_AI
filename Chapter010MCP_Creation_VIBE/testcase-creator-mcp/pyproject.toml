@@ -1,0 +1,14 @@
+[project]
+name = "vwo-testcases-mcp-server"
+version = "0.1.0"
+description = "FastMCP server exposing Tools, Resources, and Prompts over VWO test cases dataset"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=1.29.0",
+    "fastmcp>=2.14.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
