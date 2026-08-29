@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "vwo-testcases": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "d:/Study/TestingAcademy_AI_Blueprint/Chapter010MCP_Creation_VIBE/testcase-creator-mcp",
+        "run",
+        "python",
+        "server.py"
+      ],
+      "env": {
+        "VWO_TEST_CASES_CSV": "d:/Study/TestingAcademy_AI_Blueprint/Chapter010MCP_Creation_VIBE/testcase-creator-mcp/vwo_5000_test_cases.csv"
+      }
+    }
+  }
+}
