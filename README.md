@@ -43,6 +43,17 @@ Each chapter pairs concept material with a hands-on project, a prompt template, 
     ├── data/                     10 Data sources (Selenium, Playwright, JIRA, PRD, Logs, etc.)
     ├── src/                      FastAPI Backend, Qdrant Hybrid Search, BGE-M3, Gemini LLM
     └── src/ui/app.py             Claude.ai themed Streamlit Chat UI (White/Cream & Teal)
+
+└── Chapter009MCP_Basics/
+    └── mcp.md
+
+└── Chapter010MCP_Creation_VIBE/
+    ├── Prompt.md
+    ├── resource/
+    └── testcase-creator-mcp/
+
+└── Chapter011Python_Learning/       Beginner to Advanced Python Concepts
+    └── README.md
 ```
 
 ---
