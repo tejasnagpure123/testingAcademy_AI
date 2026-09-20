@@ -13,12 +13,12 @@ Each chapter pairs concept material with a hands-on project, a prompt template, 
 
 ```
 .
-├── chapter_01_LLM_Basics/         How transformers and attention work
+├── Chapter001LLMBasics/         How transformers and attention work
 │   ├── attention_interactive.html
 │   ├── attention_is_all_you_need.html
 │   └── Notes.md
 │
-└── chapter_02_Prompt_Eng/         Prompt engineering for QA work
+└── Chapter002Prompt/         Prompt engineering for QA work
     ├── Anti_Hallucinations_Rules.md
     ├── Project1_TC_Gen/           Test case generation from a PRD/API doc
     │   ├── RICE-POT-TestCase-Prompt.md
@@ -36,6 +36,16 @@ Each chapter pairs concept material with a hands-on project, a prompt template, 
         ├── 02_TestCases_from_prd
         ├── 03_API_Test_Generation.md
         ├── 04_Negative_TC_Only.md
+├── Chapter003BlastFW/            The BLAST Framework (new folder)
+│   ├── B.L.A.S.T.md
+│   └── README.md
+├── Chapter003BlastFW_TestStrategyProject/  (new folder)
+│   └── README.md
+├── Chapter004AIAgentsWithn8n/     (new folder)
+│   └── n8n_Ai_Agents/
+├── Chapter005AIAgentsWithLangFlow/  (new folder)
+│   └── AIAgent001_Simple_Hello_World.json
+├── Chapter006_Ai_Social_Media_Content_Creation/ (new folder)
 ├── Chapter006Rag/                Connecting LLMs to private data with local vector DB
 │   └── Basic_Rag/                PDF ingestion + ChromaDB + Ollama + Groq
 │
@@ -98,6 +108,12 @@ Goal: turn an API PDF (`Restful-booker.pdf`) into a CSV of enterprise-grade test
 
 - `RICE-POT-TestCase-Prompt.md` — the worked prompt. Targets `app.vwo.com` as the example product, but the structure transfers to any PRD/API doc.
 - `RICE_POT_FRAMEWORK/RICE_POT.md` — explanation of each letter of the framework.
+
+---
+
+### Recent Update
+
+This README.md file was updated on 2026-09-20 with new changes after the last push.
 - `Restful-booker.pdf` + `Restful_Booker_API_Test_Cases.md` — input PDF and the generated test-case set.
 - `output/deepseek_csv_20260524_0d9b7c.csv` — actual model output produced from the prompt.
 

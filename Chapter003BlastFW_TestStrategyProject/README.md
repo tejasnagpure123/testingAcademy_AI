@@ -16,3 +16,9 @@ The application has been successfully deployed to Vercel and is available at:
 ## Local Development
 Navigate to `test-strategy-app` and run `npm install` followed by `npm run dev`.
 Make sure you provide the correct environment variables in `test-strategy-app/.env.local`.
+
+---
+
+### Recent Update
+
+This README.md file was updated on 2026-09-20 with new changes after the last push.
