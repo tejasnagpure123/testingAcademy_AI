@@ -66,6 +66,10 @@ Each chapter pairs concept material with a hands-on project, a prompt template, 
     ├── README.md
     ├── ex_20_Collections/           Collections, file I/O, and test data exercises
     └── ex_21_Pytest/                Pytest basics, examples, and cheatsheet
+
+└── Chapter012Crew.ai/               Multi-Agent QA test case generation using CrewAI
+    ├── 01_Test_Analyst_AIAgent.py   AI Agent that reads requirements and outputs test cases
+    └── .env                         Groq API proxy configuration
 ```
 
 ---
@@ -271,6 +275,26 @@ You can read it linearly (chapter 01 → 02) or jump straight to a project:
 
 - Any modern LLM (Claude / GPT / Gemini / DeepSeek). No specific provider required.
 - For Project 2 only: **JDK 11+** and **Maven 3.9+** to compile and run the Selenium framework.
+- For Chapter 12: Python 3.12+ and `crewai` package installed in a virtual environment.
+
+---
+
+## Chapter 12 — AI Agents with CrewAI
+
+This chapter explores how to build autonomous, multi-agent workflows using the **CrewAI** framework. As part of this chapter, a **Senior QA Engineer AI Agent** was built to automatically generate test cases based on feature requirements.
+
+**What's here:**
+- `Chapter012Crew.ai/01_Test_Analyst_AIAgent.py` — A CrewAI setup containing a Senior QA Agent and a Task designed to generate 5-10 test cases for a login page.
+- **Custom LLM Integration:** The agent is wired to a custom Groq OpenAI proxy (using the `openai/gpt-oss-120b` model) through LiteLLM.
+- **Advanced API Workarounds:** Includes a custom monkey-patch to strip unsupported caching parameters (`cache_breakpoint`) that CrewAI implicitly injects, ensuring seamless compatibility with standard API endpoints.
+- **Pytest Compatible:** The script includes test wrappers and robust error handling to allow execution both directly via python and through test frameworks.
+
+**How to Run Chapter 12:**
+```bash
+cd Chapter012Crew.ai
+.\venv\Scripts\activate
+python 01_Test_Analyst_AIAgent.py
+```
 
 ## Previous Chapters
 
