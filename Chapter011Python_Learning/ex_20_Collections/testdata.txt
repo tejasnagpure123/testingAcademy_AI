@@ -1,0 +1,4 @@
+This is line 1 of random test data.
+This is line 2 of random test data.
+Another line of data: 12345.
+Final line for testing purposes.

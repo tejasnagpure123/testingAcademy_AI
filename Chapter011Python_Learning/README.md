@@ -21,3 +21,15 @@ This chapter focuses on fundamental Python concepts, progressing from basic synt
 *   **`ex_15_Set_Dict_Map/`**: Explores sets (unordered collections of unique elements) and dictionaries/maps (key-value pairs) and their operations.
 *   **`ex_16_Map_Filter/`**: Focuses on the `map()` and `filter()` functions for functional-style programming with iterables.
 *   **`ex_17_Dict/`**: Provides further examples and exercises on dictionaries, including advanced operations.
+*   **`ex_20_Collections/`**: Practices collections and file I/O through hands-on labs using text, CSV, and environment data.
+*   **`ex_21_Pytest/`**: Introduces pytest test discovery, assertions, markers, fixtures, parametrization, and CSV-driven test data.
+
+## Running the Pytest Examples
+
+From the repository root, run the examples with the project virtual environment:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest Chapter011Python_Learning\ex_21_Pytest\Lab_181_pytest.py
+```
+
+See [`ex_21_Pytest/PyTest_Cheatsheet.md`](ex_21_Pytest/PyTest_Cheatsheet.md) for test naming rules, fixtures, markers, parametrization, and common pytest commands.

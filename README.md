@@ -63,7 +63,9 @@ Each chapter pairs concept material with a hands-on project, a prompt template, 
     └── testcase-creator-mcp/
 
 └── Chapter011Python_Learning/       Beginner to Advanced Python Concepts
-    └── README.md
+    ├── README.md
+    ├── ex_20_Collections/           Collections, file I/O, and test data exercises
+    └── ex_21_Pytest/                Pytest basics, examples, and cheatsheet
 ```
 
 ---
@@ -262,6 +264,8 @@ You can read it linearly (chapter 01 → 02) or jump straight to a project:
 - **"I want to write tests from a PDF/API doc."** → `chapter_02_Prompt_Eng/Project1_TC_Gen/`.
 - **"I want to scaffold a Selenium project."** → `chapter_02_Prompt_Eng/Project2_Selenium_Framework/SKILL.md`, then run the Maven project under `AdvanceSeleniumFramework/`.
 - **"I want my model to stop making things up."** → `chapter_02_Prompt_Eng/Anti_Hallucinations_Rules.md`.
+- **"I want to learn Python for test automation."** → `Chapter011Python_Learning/README.md`.
+- **"I want to start writing pytest tests."** → `Chapter011Python_Learning/ex_21_Pytest/PyTest_Cheatsheet.md`.
 
 ## Requirements
 
