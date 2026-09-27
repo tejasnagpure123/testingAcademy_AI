@@ -1,4 +1,5 @@
 {
+    "python.defaultInterpreterPath": "${workspaceFolder}/Chapter012Crew.ai/.venv/Scripts/python.exe",
     "java.compile.nullAnalysis.mode": "automatic",
     "chat.tools.terminal.autoApprove": {
         "/^uv --version$/": {

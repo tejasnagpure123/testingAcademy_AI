@@ -1,0 +1,20 @@
+{
+    "key": "DEMO-1",
+    "summary": "Login form submits when required fields are empty",
+    "description": "Observed: submitting the login form with both fields empty sends a request and displays a generic error. Expected: block submission and show inline required-field messages.",
+    "issue_type": "Bug",
+    "status": "Open",
+    "priority": "Medium",
+    "labels": [
+        "login",
+        "validation"
+    ],
+    "components": [
+        "Authentication UI"
+    ],
+    "parent_key": null,
+    "subtasks": [],
+    "linked_issues": [],
+    "acceptance_criteria": "",
+    "source": "DEMO"
+}
