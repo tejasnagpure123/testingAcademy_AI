@@ -1,0 +1,10 @@
+{
+    "name": "jira-qa-crew-playwright-fixture",
+    "private": true,
+    "scripts": {
+        "test:list": "playwright test --list"
+    },
+    "devDependencies": {
+        "@playwright/test": "1.56.1"
+    }
+}

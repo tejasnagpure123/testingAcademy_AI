@@ -1,0 +1,4 @@
+deepeval==4.2.7
+pytest>=8,<10
+python-dotenv>=1,<2
+portalocker[win32]>=2.8
