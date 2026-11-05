@@ -70,6 +70,12 @@ Each chapter pairs concept material with a hands-on project, a prompt template, 
 └── Chapter012Crew.ai/               Multi-Agent QA test case generation using CrewAI
     ├── 01_Test_Analyst_AIAgent.py   AI Agent that reads requirements and outputs test cases
     └── .env                         Groq API proxy configuration
+
+└── Chapter017_Langchain/            Jira-driven QA pipeline with local RAG and Playwright
+    ├── data/                        TTA Cart test-case corpus
+    ├── reports/jira/                Generated plans, cases, RAG results, and execution evidence
+    ├── src/chapters/                LangChain examples and Jira-to-Playwright runner
+    └── tests/                       RAG and pipeline unit tests
 ```
 
 ---
@@ -276,6 +282,7 @@ You can read it linearly (chapter 01 → 02) or jump straight to a project:
 - Any modern LLM (Claude / GPT / Gemini / DeepSeek). No specific provider required.
 - For Project 2 only: **JDK 11+** and **Maven 3.9+** to compile and run the Selenium framework.
 - For Chapter 12: Python 3.12+ and `crewai` package installed in a virtual environment.
+- For Chapter 17: Python, the packages in `Chapter017_Langchain/src/requirements.txt`, and Chromium installed through Playwright.
 
 ---
 
@@ -294,6 +301,45 @@ This chapter explores how to build autonomous, multi-agent workflows using the *
 cd Chapter012Crew.ai
 .\venv\Scripts\activate
 python 01_Test_Analyst_AIAgent.py
+```
+
+---
+
+## Chapter 17 — Jira-to-Playwright QA Pipeline with RAG
+
+Chapter 17 demonstrates an end-to-end QA workflow for a Jira issue:
+
+1. Fetch issue details from Jira.
+2. Retrieve related valid, invalid, and duplicate TTA Cart test cases from a small local TF-IDF RAG corpus.
+3. Generate a test plan and test cases using LangChain and Groq.
+4. Execute a selected valid test case in the browser with Playwright.
+5. Save the generated documents, RAG evidence, and execution report under `Chapter017_Langchain/reports/jira/<ISSUE-KEY>/`.
+
+The optional Slack notification is a **print-only placeholder**; it does not connect to Slack or send messages.
+
+**Configuration:** Create `Chapter017_Langchain/.env` with `JIRA_EMAIL`, `JIRA_TOKEN`, `GROQ_API_KEY`, and `LLM_MODEL`. Supply the application URL with `--app-url` or `APP_BASE_URL`. Login tests also need `APP_USERNAME` and `APP_PASSWORD`. Keep credentials out of source control.
+
+**Install dependencies and the Chromium browser** (PowerShell, from the repository root):
+```powershell
+python -m venv .\Chapter017_Langchain\src\.venv
+& ".\Chapter017_Langchain\src\.venv\Scripts\python.exe" -m pip install -r ".\Chapter017_Langchain\src\requirements.txt"
+& ".\Chapter017_Langchain\src\.venv\Scripts\python.exe" -m playwright install chromium
+```
+
+**Run the selected TTA Cart checkout case** (this places a practice order):
+```powershell
+& ".\Chapter017_Langchain\src\.venv\Scripts\python.exe" `
+  ".\Chapter017_Langchain\src\chapters\013_Fetch_Jira_Full_E2E_Playwright_Agent_Orcch_RAG.py" `
+  KAN-4 `
+  --app-url "https://app.thetestingacademy.com/playwright/ttacart/" `
+  --case-id TTA-CHECKOUT-001 `
+  --skip-unsupported `
+  --allow-practice-order
+```
+
+The practice-order flag is required for this case; use it only when a practice order is intended. To run the local RAG tests:
+```powershell
+& ".\Chapter017_Langchain\src\.venv\Scripts\python.exe" -m unittest discover -s ".\Chapter017_Langchain\tests" -p "test_tta_cart_rag.py" -v
 ```
 
 ## Previous Chapters
