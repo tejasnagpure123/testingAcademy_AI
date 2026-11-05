@@ -1,0 +1,122 @@
+[
+  {
+    "id": "TTA-AUTH-REMEMBER-001",
+    "title": "Verify Remember Me login persistence on TTA Cart",
+    "feature": "authentication remember me persistent session browser restart",
+    "test_type": "unsupported requirement",
+    "validity": "invalid",
+    "evidence_status": "observed",
+    "importance": "high",
+    "validity_rationale": "The TTA Cart login page was inspected with Playwright MCP on 2026-11-05 and exposes Username, Password, and Login only; no Remember Me control exists. This scenario is not executable on this application unless the requirement or application changes.",
+    "description": "Attempt to locate and select a Remember Me checkbox or toggle, then restart the browser profile and verify the session remains authenticated.",
+    "expected_result": "BLOCKED on current TTA Cart: the required Remember Me control is absent. Do not treat ordinary login persistence as evidence for Remember Me.",
+    "tags": [
+      "login",
+      "authentication",
+      "remember me",
+      "persistent session",
+      "browser restart",
+      "KAN-4"
+    ],
+    "jira_keys": [
+      "KAN-4"
+    ],
+    "source": "Playwright MCP inspection of https://app.thetestingacademy.com/playwright/ttacart/ on 2026-11-05",
+    "score": 0.434,
+    "possible_duplicates": []
+  },
+  {
+    "id": "TTA-LOGIN-001",
+    "title": "Successful login with a supported standard user",
+    "feature": "authentication login session",
+    "test_type": "valid positive",
+    "validity": "valid",
+    "evidence_status": "observed",
+    "importance": "high",
+    "validity_rationale": "Supported positive login flow documented for the practice application.",
+    "description": "Open the TTA Cart login page, enter a provisioned valid standard-user account, submit Login, and inspect the resulting page.",
+    "expected_result": "Authentication succeeds and the Products page is displayed.",
+    "tags": [
+      "login",
+      "authentication",
+      "standard user"
+    ],
+    "source": "Playwright MCP observed successful login on 2026-11-05",
+    "score": 0.1723,
+    "possible_duplicates": [
+      {
+        "id": "TTA-LOGIN-004",
+        "title": "Successful login with a supported standard user",
+        "similarity": 1.0
+      }
+    ]
+  },
+  {
+    "id": "TTA-LOGIN-004",
+    "title": "Successful login with a supported standard user",
+    "feature": "authentication login session",
+    "test_type": "valid positive",
+    "validity": "valid",
+    "evidence_status": "synthetic_duplicate",
+    "importance": "high",
+    "validity_rationale": "Synthetic duplicate record seeded to verify duplicate detection; it duplicates TTA-LOGIN-001.",
+    "description": "Open the TTA Cart login page, enter a provisioned valid standard-user account, submit Login, and inspect the resulting page.",
+    "expected_result": "Authentication succeeds and the Products page is displayed.",
+    "tags": [
+      "login",
+      "authentication",
+      "standard user"
+    ],
+    "source": "Synthetic local corpus duplicate seed",
+    "score": 0.1723,
+    "possible_duplicates": [
+      {
+        "id": "TTA-LOGIN-001",
+        "title": "Successful login with a supported standard user",
+        "similarity": 1.0
+      }
+    ]
+  },
+  {
+    "id": "TTA-LOGIN-003",
+    "title": "Reject login when credentials are empty",
+    "feature": "authentication login required fields",
+    "test_type": "valid negative",
+    "validity": "valid",
+    "evidence_status": "design_reference",
+    "importance": "medium",
+    "validity_rationale": "A negative form-validation test; verify the UI message before asserting its exact wording.",
+    "description": "Submit the login form without entering a username or password.",
+    "expected_result": "Login is not successful and the user remains on the login page with required-field feedback.",
+    "tags": [
+      "login",
+      "authentication",
+      "empty fields",
+      "negative"
+    ],
+    "source": "Curated TTA Cart test-design reference; behavior not yet browser-verified",
+    "score": 0.1099,
+    "possible_duplicates": []
+  },
+  {
+    "id": "TTA-CHECKOUT-001",
+    "title": "Complete the TTA Cart checkout happy path",
+    "feature": "cart checkout order pricing",
+    "test_type": "valid positive",
+    "validity": "valid",
+    "importance": "high",
+    "validity_rationale": "Checkout totals and the order-complete confirmation were observed in the TTA Cart browser flow.",
+    "description": "With the first listed product in the cart, provide checkout information, continue to the overview, verify the displayed order totals, and finish the practice order.",
+    "expected_result": "The overview shows item total $15.99, tax $1.28, total $17.27; finishing displays Thank you for your order!.",
+    "tags": [
+      "checkout",
+      "order",
+      "pricing",
+      "cart",
+      "thank you"
+    ],
+    "source": "Observed with Playwright MCP on 2026-11-05",
+    "score": 0.1007,
+    "possible_duplicates": []
+  }
+]
